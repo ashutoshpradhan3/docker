@@ -1,0 +1,86 @@
+/* src/styles/CardPage.css */
+
+.card-page {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    justify-items: center;
+  }
+  
+  .card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    height: 400px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .card img {
+    width: 100%;
+    height: 180px; /* Slightly smaller height to fit comfortably */
+    object-fit: contain; /* Ensures the full image is visible without cropping */
+    border-radius: 10px 10px 0 0;
+}
+
+  
+  .card h3 {
+    margin: 15px 0 10px;
+    font-size: 1.5em;
+    color: #333;
+  }
+  
+  .card p {
+    font-size: 1em;
+    color: #555;
+    flex-grow: 1;
+  }
+  
+  .card .price {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #000;
+  }
+
+  
+
+  .card {
+    /* Existing styles */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    background-color: #f0f8ff; /* Light blue background on hover */
+  }
+  
+  .card h3 {
+    transition: color 0.3s ease;
+  }
+  
+  .card:hover h3 {
+    color: #007bff; /* Change text color on hover */
+  }
+  
+  .card p.price {
+    transition: color 0.3s ease;
+  }
+  
+  .card:hover p.price {
+    color: #28a745; /* Change price color on hover */
+  }
+  

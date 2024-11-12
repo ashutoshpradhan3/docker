@@ -1,0 +1,75 @@
+.product-detail {
+    display: flex;
+    justify-content: center; /* Centering the content */
+    align-items: flex-start;
+    padding: 20px;
+  }
+  
+  .slider-container {
+    width: 400px; /* Set the width of the slider container */
+    margin-right: 20px; /* Space between slider and description */
+    text-align: center; /* Center text below the slider */
+  }
+  
+  .slider {
+    width: 400px; /* Fixed width for the slider */
+    height: 400px; /* Fixed height for the slider */
+    overflow: hidden; /* Hide overflow */
+    border-radius: 8px; /* Rounded corners */
+    position: relative; /* Position relative for text overlay */
+  }
+  
+  .slider-image {
+    width: 100%; /* Full width of the slider */
+    height: 100%; /* Full height of the slider */
+    transition: opacity 0.5s ease-in-out; /* Fade effect */
+  }
+  
+  .show-phone-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 30px; /* Increased padding for larger button */
+    font-size: 18px; /* Larger text for the button */
+    cursor: pointer;
+    margin-top: 15px; /* Space above button */
+    transition: background-color 0.3s; /* Transition effect */
+  }
+  
+  .show-phone-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  .phone-number {
+    margin-top: 10px;
+    font-size: 18px; /* Bigger font for phone number */
+    color: #333;
+  }
+  
+  .description-container {
+    width: 50%; /* Set width for the description */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center description vertically */
+  }
+  
+  .product-description {
+    font-size: 20px; /* Larger font size for better readability */
+    color: #555;
+    line-height: 1.6; /* Increase line spacing */
+    text-align: center; /* Center align text */
+    animation: fadeIn 1s; /* Fade-in effect */
+  }
+  
+  /* Animation for the description */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
