@@ -7,7 +7,7 @@ import ashutosh from '../assets1/ashutosh.png';
 import krishna from '../assets1/krishna.png';
 import ayush from '../assets1/ayush.png';
 import arnav from '../assets1/arnav.png';
-import om from '../assets1/om.png';
+import om from '../assets1/rishank.png';
 
 function Testimonials() {
   const testimonials = [
@@ -47,7 +47,7 @@ function Testimonials() {
       image: arnav,
     },
     {
-      name: 'Om sharma',
+      name: 'Rishank',
       feedback: 'Nalanda Ceramics offers unique and beautiful options! The team helped us pick the right products, and our kitchen looks fantastic!',
       image: om,
     }
