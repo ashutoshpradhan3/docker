@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = "ashutoshpradhan3/nalanda-ceramics"
-        VERSION = "v1.0" // Could also use VERSION = "${env.BUILD_NUMBER}"
+        VERSION = "v1.0" // Or use "${env.BUILD_NUMBER}" for auto-increment
     }
 
     stages {
@@ -16,12 +16,10 @@ pipeline {
         stage('Test Shell') {
             steps {
                 echo "Testing shell environment..."
-                sh '''
-                    echo "✅ Hello from Jenkins Shell Stage"
-                    echo "Current User: $(whoami)"
-                    echo "Home Dir: $HOME"
-                    echo "PATH: $PATH"
-                '''
+                sh 'echo "✅ Hello from Jenkins Shell Stage"'
+                sh 'whoami'
+                sh 'echo $HOME'
+                sh 'echo $PATH'
             }
         }
 
@@ -34,7 +32,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Ensure Jenkins uses correct PATH
+                    // Ensure Jenkins uses correct PATH on macOS
                     withEnv(["PATH+EXTRA=/usr/local/bin"]) {
                         sh "docker build -t ${IMAGE_NAME}:${VERSION} ."
                     }
@@ -46,7 +44,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                        sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
                     }
                 }
             }
