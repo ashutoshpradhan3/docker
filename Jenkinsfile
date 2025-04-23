@@ -6,14 +6,13 @@ pipeline {
         VERSION = "v1.0" // Could also use VERSION = "${env.BUILD_NUMBER}"
     }
 
-    stage('Clean Workspace') {
-        steps {
-            cleanWs()  // Clean the workspace before the build starts
-        }
-    }
-
-
     stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()  // Clean the workspace before the build starts
+            }
+        }
+
         stage('Test Shell') {
             steps {
                 echo "Testing shell environment..."
@@ -25,7 +24,6 @@ pipeline {
                 '''
             }
         }
-
 
         stage('Checkout Code') {
             steps {
@@ -43,7 +41,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Login to Docker Hub') {
             steps {
