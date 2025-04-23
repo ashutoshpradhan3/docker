@@ -1,6 +1,7 @@
 // src/components/Products/Prod1.js
-import React from 'react';
+import React,{useState} from 'react';
 import '../../styles/CardPage.css'; // Ensure the correct path
+import ProductPage from './TileDetail1';
 
 import tile1 from '../../ImagesProduct/tile1.png';
 import tile2 from '../../ImagesProduct/tile2.png';
@@ -10,6 +11,8 @@ import tile5 from '../../ImagesProduct/tile5.png';
 import tile6 from '../../ImagesProduct/tile6.png';
 
 function Prod1() {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
   const products = [
     { id: 1, name: 'Textilo Pista', description: 'SKU: T3030441 , 300x300mm', image: tile1, price: '₹320 / Sqft' },
     { id: 2, name: 'Portico HL 01', description: 'SKU: T11H113000284105 , 300x600mm', image: tile2, price: '₹780 / Sqft' },
@@ -20,16 +23,30 @@ function Prod1() {
 
   ];
 
+  const openProductPage = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const closeProductPage = () => {
+    setSelectedProduct(null);
+  };
+
+
+
   return (
     <div className="card-page">
-      {products.map((product) => (
-        <div key={product.id} className="card">
-          <img src={product.image} alt={product.name} />
-          <h3>{product.name}</h3>
-          <p>{product.description}</p>
-          <p className="price">{product.price}</p>
-        </div>
-      ))}
+      {selectedProduct ? (
+        <ProductPage product={selectedProduct} onBack={closeProductPage} />
+      ) : (
+        products.map((product) => (
+          <div key={product.id} className="card" onClick={() => openProductPage(product)}>
+            <img src={product.image} alt={product.name} />
+            <h3>{product.name}</h3>
+            <p>{product.description}</p>
+            <p className="price">{product.price}</p>
+          </div>
+        ))
+      )}
     </div>
   );
 }

@@ -24,7 +24,7 @@ function Footer() {
           <h3>Contact Info</h3>
           <p><strong>Location:</strong> Nalanda CP Ceramics, Patna, Bihar</p>
           <p><strong>Phone:</strong> +91-9508930544</p>
-          <p><strong>Email:</strong> contact@nalandaceramics.com</p>
+          <p><strong>Email:</strong> nalandaceramics@gmail.com</p>
         </div>
 
         <div className="footer-social">

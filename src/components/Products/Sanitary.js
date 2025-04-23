@@ -1,6 +1,7 @@
 // src/components/Products/Prod1.js
-import React from 'react';
+import React,{useState} from 'react';
 import '../../styles/CardPage.css'; // Ensure the correct path
+import ProductPage from './SanitaryDetail1';
 
 import san1 from '../../ImagesProduct/san1.png';
 import san2 from '../../ImagesProduct/san2.png';
@@ -10,6 +11,7 @@ import san5 from '../../ImagesProduct/san5.png';
 import san6 from '../../ImagesProduct/san6.png';
 
 function Prod1() {
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const products = [
     { id: 1, name: 'Wall-hung round-front toilet with skirted trapway, dual-flush', description: 'K-28780IN-0', image: san1, price: '₹4,940.00' },
     { id: 2, name: 'Urinal (Back Inlet) With Fixing Accessories', description: 'URS-WHT-13263 , 340x325x650 mm', image: san2, price: ' ₹2,400.00' },
@@ -19,16 +21,28 @@ function Prod1() {
     { id: 6, name: 'Plantex Platinum Ceramic Wall Hung Western Toilet/Commode', description: 'Toliet/Commode With Soft Close Toilet Seat - P Trap Outlet (White)', image: san6, price: ' ₹6,999' },
   ];
 
+  const openProductPage = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const closeProductPage = () => {
+    setSelectedProduct(null);
+  };
+
   return (
     <div className="card-page">
-      {products.map((product) => (
-        <div key={product.id} className="card">
-          <img src={product.image} alt={product.name} />
-          <h3>{product.name}</h3>
-          <p>{product.description}</p>
-          <p className="price">{product.price}</p>
-        </div>
-      ))}
+      {selectedProduct ? (
+        <ProductPage product={selectedProduct} onBack={closeProductPage} />
+      ) : (
+        products.map((product) => (
+          <div key={product.id} className="card" onClick={() => openProductPage(product)}>
+            <img src={product.image} alt={product.name} />
+            <h3>{product.name}</h3>
+            <p>{product.description}</p>
+            <p className="price">{product.price}</p>
+          </div>
+        ))
+      )}
     </div>
   );
 }

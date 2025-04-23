@@ -29,7 +29,7 @@ function ContactUs() {
         <p>We would love to hear from you! Reach out to us for any queries or product inquiries.</p>
         <p><strong>Showroom Location:</strong> Nalanda CP Ceramics, Patna, Bihar</p>
         <p><strong>Phone:</strong> +91-9508930544</p>
-        <p><strong>Email:</strong> contact@nalandaceramics.com</p>
+        <p><strong>Email:</strong> nalandaceramics@gmail.com</p>
       </div>
 
       <div className="contact-form">

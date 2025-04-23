@@ -1,7 +1,7 @@
 // src/components/Companies/Comp1.js
-import React from 'react';
+import React,{useState} from 'react';
 import '../../styles/CardPage.css'; // Ensure the correct path
-
+import ProductPage from './CompanyDetail';
 
 import jaq1 from '../../ImagesCompanies/jaq1.png';
 import jaq2 from '../../ImagesCompanies/jaq2.png';
@@ -11,6 +11,7 @@ import jaq5 from '../../ImagesCompanies/jaq5.png';
 import jaq6 from '../../ImagesCompanies/jaq6.png';
 
 function Comp1() {
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const products = [
     { id: 1, name: 'Counter Top Basin', description: 'CODE : OPS-WHT-15601PM', image: jaq1, price: 'MRP : ₹ 4,650.00' },
     { id: 2, name: 'Table Top Basin', description: 'CODE : LAS-WHT-91933', image: jaq2, price: 'MRP : Price on request' },
@@ -21,16 +22,28 @@ function Comp1() {
 
   ];
 
+  const openProductPage = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const closeProductPage = () => {
+    setSelectedProduct(null);
+  };
+
   return (
     <div className="card-page">
-      {products.map((product) => (
-        <div key={product.id} className="card">
-          <img src={product.image} alt={product.name} />
-          <h3>{product.name}</h3>
-          <p>{product.description}</p>
-          <p className="price">{product.price}</p>
-        </div>
-      ))}
+      {selectedProduct ? (
+        <ProductPage product={selectedProduct} onBack={closeProductPage} />
+      ) : (
+        products.map((product) => (
+          <div key={product.id} className="card" onClick={() => openProductPage(product)}>
+            <img src={product.image} alt={product.name} />
+            <h3>{product.name}</h3>
+            <p>{product.description}</p>
+            <p className="price">{product.price}</p>
+          </div>
+        ))
+      )}
     </div>
   );
 }

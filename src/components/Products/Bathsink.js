@@ -1,7 +1,6 @@
-// src/components/products/Prod1.js
 import React, { useState } from 'react';
 import '../../styles/CardPage.css';
-import ProductDetail from './SinkDetail1';
+import ProductPage from './SinkDetail1';
 
 import sink1 from '../../ImagesProduct/sink1.png';
 import sink2 from '../../ImagesProduct/sink2.png';
@@ -22,21 +21,21 @@ function Prod1() {
     { id: 6, name: 'Wall Hung Bidet - White', description: 'Code : SLS-WHT-6153N', image: sink6, price: 'MRP : ₹ 9,200.00' },
   ];
 
-  const openProductDetail = (product) => {
+  const openProductPage = (product) => {
     setSelectedProduct(product);
   };
 
-  const closeProductDetail = () => {
+  const closeProductPage = () => {
     setSelectedProduct(null);
   };
 
   return (
     <div className="card-page">
       {selectedProduct ? (
-        <ProductDetail product={selectedProduct} onClose={closeProductDetail} />
+        <ProductPage product={selectedProduct} onBack={closeProductPage} />
       ) : (
         products.map((product) => (
-          <div key={product.id} className="card" onClick={() => openProductDetail(product)}>
+          <div key={product.id} className="card" onClick={() => openProductPage(product)}>
             <img src={product.image} alt={product.name} />
             <h3>{product.name}</h3>
             <p>{product.description}</p>

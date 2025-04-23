@@ -1,6 +1,7 @@
 // src/components/Products/Prod1.js
-import React from 'react';
+import React,{useState}  from 'react';
 import '../../styles/CardPage.css'; // Ensure the correct path
+import ProductPage from './MarbleDetail1';
 
 import marble1 from '../../ImagesProduct/marble1.png';
 import marble2 from '../../ImagesProduct/marble2.png';
@@ -10,6 +11,8 @@ import marble5 from '../../ImagesProduct/marble5.png';
 import marble6 from '../../ImagesProduct/marble6.png';
 
 function Prod1() {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
   const products = [
     { id: 1, name: 'DR Matte Endless Canova Statuario', description: 'Size 600x1200 mm ft', image: marble1, price: 'MRP ₹ 126 /- Sq.ft' },
     { id: 2, name: 'DR Matte Statuario Marmi Marble', description: 'Size 600x1200 mm ft', image: marble2, price: 'MRP ₹ 126 /- Sq.ft' },
@@ -20,16 +23,28 @@ function Prod1() {
 
   ];
 
+  const openProductPage = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const closeProductPage = () => {
+    setSelectedProduct(null);
+  };
+
   return (
     <div className="card-page">
-      {products.map((product) => (
-        <div key={product.id} className="card">
-          <img src={product.image} alt={product.name} />
-          <h3>{product.name}</h3>
-          <p>{product.description}</p>
-          <p className="price">{product.price}</p>
-        </div>
-      ))}
+      {selectedProduct ? (
+        <ProductPage product={selectedProduct} onBack={closeProductPage} />
+      ) : (
+        products.map((product) => (
+          <div key={product.id} className="card" onClick={() => openProductPage(product)}>
+            <img src={product.image} alt={product.name} />
+            <h3>{product.name}</h3>
+            <p>{product.description}</p>
+            <p className="price">{product.price}</p>
+          </div>
+        ))
+      )}
     </div>
   );
 }

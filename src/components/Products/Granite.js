@@ -1,6 +1,7 @@
 // src/components/Products/Prod1.js
-import React from 'react';
+import React,{useState} from 'react';
 import '../../styles/CardPage.css'; // Ensure the correct path
+import ProductPage from './GraniteDetail1';
 
 import granite1 from '../../ImagesProduct/granite1.png';
 import granite2 from '../../ImagesProduct/granite2.png';
@@ -10,6 +11,8 @@ import granite5 from '../../ImagesProduct/granite5.png';
 import granite6 from '../../ImagesProduct/granite6.png';
 
 function Prod1() {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
   const products = [
     { id: 1, name: 'Nu River Smoky', description: 'Matte Finish , 600x600 mm', image: granite1, price: 'MRP Rs 119.00/sq.ft (incl. of all taxes' },
     { id: 2, name: 'SNu River Ash', description: 'Glossy Finish , 600x600 mm', image: granite2, price: 'MRP Rs 92.00/sq.ft (incl. of all taxes)' },
@@ -19,16 +22,28 @@ function Prod1() {
     { id: 6, name: 'Sahara Double Body Glossy Nero', description: 'Glossy Finish , 600x600 mm', image: granite6, price: 'MRP Rs 102.00/sq.ft (incl. of all taxes)' },
   ];
 
+  const openProductPage = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const closeProductPage = () => {
+    setSelectedProduct(null);
+  };
+
   return (
     <div className="card-page">
-      {products.map((product) => (
-        <div key={product.id} className="card">
-          <img src={product.image} alt={product.name} />
-          <h3>{product.name}</h3>
-          <p>{product.description}</p>
-          <p className="price">{product.price}</p>
-        </div>
-      ))}
+      {selectedProduct ? (
+        <ProductPage product={selectedProduct} onBack={closeProductPage} />
+      ) : (
+        products.map((product) => (
+          <div key={product.id} className="card" onClick={() => openProductPage(product)}>
+            <img src={product.image} alt={product.name} />
+            <h3>{product.name}</h3>
+            <p>{product.description}</p>
+            <p className="price">{product.price}</p>
+          </div>
+        ))
+      )}
     </div>
   );
 }
