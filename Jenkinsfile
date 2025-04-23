@@ -3,10 +3,21 @@ pipeline {
 
     environment {
         IMAGE_NAME = "ashutoshpradhan3/nalanda-ceramics"
-        VERSION = "v1.0" // You can also use `VERSION = "${env.BUILD_NUMBER}"` or commit hash
+        VERSION = "v1.0" // Could also use VERSION = "${env.BUILD_NUMBER}"
     }
 
     stages {
+        stage('Test Shell') {
+            steps {
+                echo "Testing shell environment..."
+                sh '''
+                    echo "✅ Hello from Jenkins Shell Stage"
+                    echo "Current User: $(whoami)"
+                    echo "Home Dir: $HOME"
+                '''
+            }
+        }
+
         stage('Checkout Code') {
             steps {
                 checkout scm
@@ -16,7 +27,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t ${IMAGE_NAME}:${VERSION} ."
+                    // Ensures Jenkins uses correct PATH
+                    withEnv(["PATH+EXTRA=/usr/local/bin"]) {
+                        sh(script: "docker build -t ${IMAGE_NAME}:${VERSION} .", shell: '/bin/bash')
+                    }
                 }
             }
         }
