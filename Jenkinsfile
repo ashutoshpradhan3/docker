@@ -13,15 +13,17 @@ pipeline {
     stages {
         stage('Initialize & Clean Workspace') {
             steps {
-                echo '🔥 Manually cleaning full workspace (including hidden files)...'
-                sh 'rm -rf * .[^.]* || true' // Clean everything manually
-                checkout scm // Then checkout your code
+                echo '🔥 Cleaning workspace safely (excluding Jenkins internals)...'
+                sh '''
+                    find . -maxdepth 1 ! -name '.' ! -name '@tmp' ! -name '@script' ! -name '@durable-*' -exec rm -rf {} +
+                '''
+                checkout scm
             }
         }
 
         stage('Test Shell') {
             steps {
-                echo "Testing shell environment..."
+                echo "🧪 Testing shell environment..."
                 script {
                     sh '''
                         echo "✅ Hello from Jenkins Shell Stage"
