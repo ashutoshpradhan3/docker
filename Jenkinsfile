@@ -2,45 +2,50 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'ashutoshpradhan3/nalanda-ceramics:latest'
-        DOCKER_CREDENTIALS_ID = 'docker-hub-creds'
+        IMAGE_NAME = "ashutoshpradhan3/nalanda-ceramics"
+        VERSION = "v1.0" // You can also use `VERSION = "${env.BUILD_NUMBER}"` or commit hash
     }
 
     stages {
-        stage('Clone GitHub Repo') {
+        stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/ashutoshpradhan3/docker', branch: 'main'
+                checkout scm
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE}")
+                    sh "docker build -t ${IMAGE_NAME}:${VERSION} ."
                 }
             }
         }
 
         stage('Login to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                    }
                 }
             }
         }
 
-        stage('Push to Docker Hub') {
+        stage('Push Docker Image') {
             steps {
                 script {
-                    docker.image("${DOCKER_IMAGE}").push()
+                    sh "docker push ${IMAGE_NAME}:${VERSION}"
                 }
             }
         }
     }
 
     post {
-        always {
-            echo "Pipeline completed."
+        success {
+            echo "✅ CI/CD Pipeline completed successfully. Image pushed: ${IMAGE_NAME}:${VERSION}"
+        }
+        failure {
+            echo "❌ CI/CD Pipeline failed."
         }
     }
 }
