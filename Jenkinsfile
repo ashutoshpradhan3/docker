@@ -14,9 +14,12 @@ pipeline {
         stage('Initialize & Clean Workspace') {
             steps {
                 echo '🔥 Cleaning workspace safely (excluding Jenkins internals)...'
-                sh '''
-                    find . -maxdepth 1 ! -name '.' ! -name '@tmp' ! -name '@script' ! -name '@durable-*' -exec rm -rf {} +
-                '''
+                script {
+                    sh '''
+                        ls -la
+                        find . -mindepth 1 ! -name '.git' ! -name '.gitignore' ! -name '@tmp' ! -name '@script' ! -name '@durable-*' -exec rm -rf {} +
+                    '''
+                }
                 checkout scm
             }
         }
