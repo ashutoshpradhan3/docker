@@ -3,11 +3,11 @@ pipeline {
 
     environment {
         IMAGE_NAME = "ashutoshpradhan3/nalanda-ceramics"
-        VERSION = "v1.0" // Or use "${env.BUILD_NUMBER}" for auto-increment
+        VERSION = "v1.0"
     }
 
     options {
-        skipDefaultCheckout() // Prevents Jenkins from auto-checking out before workspace is cleaned
+        skipDefaultCheckout()
     }
 
     stages {
@@ -16,8 +16,14 @@ pipeline {
                 echo '🔥 Cleaning workspace safely (excluding Jenkins internals)...'
                 script {
                     sh '''
-                        ls -la
-                        find . -mindepth 1 ! -name '.git' ! -name '.gitignore' ! -name '@tmp' ! -name '@script' ! -name '@durable-*' -exec rm -rf {} +
+                        echo "📂 Before cleanup:"
+                        ls -a
+
+                        # Clean only safe paths (no hidden/internal Jenkins folders)
+                        find . -mindepth 1 -not -path "./@tmp*" -not -path "./@script*" -not -path "./@durable*" -not -path "./.git*" -exec rm -rf {} +
+
+                        echo "✅ After cleanup:"
+                        ls -a
                     '''
                 }
                 checkout scm
