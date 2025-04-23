@@ -13,8 +13,9 @@ pipeline {
     stages {
         stage('Initialize & Clean Workspace') {
             steps {
-                cleanWs()              // ✅ Clean workspace first
-                checkout scm           // ✅ Then checkout code
+                echo '🔥 Manually cleaning full workspace (including hidden files)...'
+                sh 'rm -rf * .[^.]* || true' // Clean everything manually
+                checkout scm // Then checkout your code
             }
         }
 
@@ -22,7 +23,6 @@ pipeline {
             steps {
                 echo "Testing shell environment..."
                 script {
-                    // Explicitly run shell commands rather than referencing missing script
                     sh '''
                         echo "✅ Hello from Jenkins Shell Stage"
                         whoami
