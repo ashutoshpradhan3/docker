@@ -6,6 +6,13 @@ pipeline {
         VERSION = "v1.0" // Could also use VERSION = "${env.BUILD_NUMBER}"
     }
 
+    stage('Clean Workspace') {
+        steps {
+            cleanWs()  // Clean the workspace before the build starts
+        }
+    }
+
+
     stages {
         stage('Test Shell') {
             steps {
@@ -14,9 +21,11 @@ pipeline {
                     echo "✅ Hello from Jenkins Shell Stage"
                     echo "Current User: $(whoami)"
                     echo "Home Dir: $HOME"
+                    echo "PATH: $PATH"
                 '''
             }
         }
+
 
         stage('Checkout Code') {
             steps {
@@ -27,13 +36,14 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Ensures Jenkins uses correct PATH
+                    // Ensure Jenkins uses correct PATH
                     withEnv(["PATH+EXTRA=/usr/local/bin"]) {
-                        sh(script: "docker build -t ${IMAGE_NAME}:${VERSION} .", shell: '/bin/bash')
+                        sh "docker build -t ${IMAGE_NAME}:${VERSION} ."
                     }
                 }
             }
         }
+
 
         stage('Login to Docker Hub') {
             steps {
