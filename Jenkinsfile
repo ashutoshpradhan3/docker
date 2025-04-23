@@ -16,10 +16,12 @@ pipeline {
         stage('Test Shell') {
             steps {
                 echo "Testing shell environment..."
-                sh 'echo "✅ Hello from Jenkins Shell Stage"'
-                sh 'whoami'
-                sh 'echo $HOME'
-                sh 'echo $PATH'
+                sh '''
+                    echo "✅ Hello from Jenkins Shell Stage"
+                    whoami
+                    echo $HOME
+                    echo $PATH
+                '''.stripIndent()
             }
         }
 
