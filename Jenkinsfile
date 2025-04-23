@@ -6,16 +6,15 @@ pipeline {
         VERSION = "v1.0" // Or use "${env.BUILD_NUMBER}" for auto-increment
     }
 
-    stages {
-        stage('Clean Workspace') {
-            steps {
-                cleanWs()  // ✅ First step: Clean before doing anything else
-            }
-        }
+    options {
+        skipDefaultCheckout() // Prevents Jenkins from auto-checking out before workspace is cleaned
+    }
 
-        stage('Checkout Code') {
+    stages {
+        stage('Initialize & Clean Workspace') {
             steps {
-                checkout scm
+                cleanWs()              // ✅ Clean workspace first
+                checkout scm           // ✅ Then checkout code
             }
         }
 
