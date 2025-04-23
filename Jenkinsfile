@@ -3,34 +3,26 @@ pipeline {
 
     environment {
         IMAGE_NAME = "ashutoshpradhan3/nalanda-ceramics"
-        VERSION = "v1.0"
+        VERSION = "v1.0" // Or use "${env.BUILD_NUMBER}" for auto-increment
     }
 
     options {
-        skipDefaultCheckout()
+        skipDefaultCheckout() // Prevents Jenkins from auto-checking out before workspace is cleaned
     }
 
     stages {
         stage('Initialize & Clean Workspace') {
             steps {
-                echo '🔥 Cleaning workspace safely (excluding Jenkins internals)...'
-                script {
-                    sh '''
-                        echo "📂 Before cleanup:"
-                        ls -a
-                        find . -mindepth 1 -not -path "./@tmp*" -not -path "./@script*" -not -path "./@durable*" -not -path "./.git*" -exec rm -rf {} +
-                        echo "✅ After cleanup:"
-                        ls -a
-                    '''
-                }
-                checkout scm
+                cleanWs() // Clean workspace first
+                checkout scm // Then checkout code
             }
         }
 
         stage('Test Shell') {
             steps {
-                echo "🧪 Shell environment test"
+                echo "Testing shell environment..."
                 script {
+                    // Explicitly run shell commands
                     sh '''
                         echo "✅ Hello from Jenkins Shell Stage"
                         whoami
