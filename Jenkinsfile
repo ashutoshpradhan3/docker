@@ -9,7 +9,13 @@ pipeline {
     stages {
         stage('Clean Workspace') {
             steps {
-                cleanWs()  // Clean the workspace before the build starts
+                cleanWs()  // ✅ First step: Clean before doing anything else
+            }
+        }
+
+        stage('Checkout Code') {
+            steps {
+                checkout scm
             }
         }
 
@@ -21,20 +27,13 @@ pipeline {
                     whoami
                     echo $HOME
                     echo $PATH
-                '''.stripIndent()
-            }
-        }
-
-        stage('Checkout Code') {
-            steps {
-                checkout scm
+                '''
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Ensure Jenkins uses correct PATH on macOS
                     withEnv(["PATH+EXTRA=/usr/local/bin"]) {
                         sh "docker build -t ${IMAGE_NAME}:${VERSION} ."
                     }
