@@ -18,10 +18,7 @@ pipeline {
                     sh '''
                         echo "📂 Before cleanup:"
                         ls -a
-
-                        # Clean only safe paths (no hidden/internal Jenkins folders)
                         find . -mindepth 1 -not -path "./@tmp*" -not -path "./@script*" -not -path "./@durable*" -not -path "./.git*" -exec rm -rf {} +
-
                         echo "✅ After cleanup:"
                         ls -a
                     '''
@@ -32,7 +29,7 @@ pipeline {
 
         stage('Test Shell') {
             steps {
-                echo "🧪 Testing shell environment..."
+                echo "🧪 Shell environment test"
                 script {
                     sh '''
                         echo "✅ Hello from Jenkins Shell Stage"
