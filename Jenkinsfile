@@ -21,12 +21,15 @@ pipeline {
         stage('Test Shell') {
             steps {
                 echo "Testing shell environment..."
-                sh '''
-                    echo "✅ Hello from Jenkins Shell Stage"
-                    whoami
-                    echo $HOME
-                    echo $PATH
-                '''
+                script {
+                    // Explicitly run shell commands rather than referencing missing script
+                    sh '''
+                        echo "✅ Hello from Jenkins Shell Stage"
+                        whoami
+                        echo $HOME
+                        echo $PATH
+                    '''
+                }
             }
         }
 
