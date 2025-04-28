@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        // Ensuring proper PATH usage in macOS Jenkins CLI
+        PATH = "/usr/local/bin:$PATH"
+    }
 
     stages {
         stage('Checkout') {
@@ -9,25 +13,33 @@ pipeline {
             }
         }
 
-
         stage('Build Docker Image') {
             steps {
-                sh 'echo "Current directory: $(pwd)"'
-                sh 'ls -l'
-                sh 'docker build -t nalanda .'
+                sh '''
+                    echo "🔍 Checking current directory:"
+                    pwd
+                    echo "📁 Listing files:"
+                    ls -la
+
+                    echo "🐳 Building Docker Image..."
+                    docker build -t nalanda .
+                '''
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                sh 'docker run -d -p 3000:3000 nalanda'
+                sh '''
+                    echo "🚀 Running Docker Container on port 3000..."
+                    docker run -d -p 3000:3000 nalanda
+                '''
             }
         }
     }
 
     post {
         always {
-            echo "Pipeline completed"
+            echo "✅ Pipeline completed"
         }
     }
 }
