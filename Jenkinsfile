@@ -12,6 +12,8 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
+                sh 'echo "Current directory: $(pwd)"'
+                sh 'ls -l'
                 sh 'docker build -t nalanda .'
             }
         }
