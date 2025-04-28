@@ -1,33 +1,27 @@
 # Step 1: Build the React app
-FROM node:18-alpine as build
+FROM node:18-alpine as builder
 
-# Set working directory
 WORKDIR /app
 
-# Copy package.json and install dependencies
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy the rest of the source code
-COPY . .
-
-# Build the app
+COPY . ./
 RUN npm run build
 
-# Step 2: Serve the app using Nginx
-FROM nginx:alpine
+# Step 2: Serve with Node.js using 'serve'
+FROM node:18-alpine
 
-# Remove default Nginx static assets
-RUN rm -rf /usr/share/nginx/html/*
+# Install serve globally
+RUN npm install -g serve
 
-# Copy the build output to Nginx directory
-COPY --from=build /app/build /usr/share/nginx/html
+WORKDIR /app
 
-# Copy a custom Nginx config (optional)
-# COPY nginx.conf /etc/nginx/nginx.conf
+# Copy build files from the builder stage
+COPY --from=builder /app/build ./build
 
-# Expose port
-EXPOSE 80
+# Expose the port that serve will run on
+EXPOSE 3000
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Run the React app with serve
+CMD ["serve", "-s", "build", "-l", "3000"]
