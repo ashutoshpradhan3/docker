@@ -1,9 +1,1 @@
-node_modules
-.git
-*.log
-Dockerfile
-Jenkinsfile
-README.md
-package-lock.json
-test.html
-public/
+
