@@ -1,7 +1,6 @@
 pipeline {
     agent any
 
-    
     stages {
         stage('Checkout') {
             steps {
@@ -9,50 +8,35 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Clean Previous Image & Container') {
             steps {
                 sh '''
-                    echo "🔍 Checking current directory:"
-                    pwd
-                    echo "📁 Listing files:"
-                    ls -la
+                    echo "🛑 Stopping old container (if any)..."
+                    docker ps -q --filter "ancestor=nalanda" | xargs -r docker stop
+                    docker ps -a -q --filter "ancestor=nalanda" | xargs -r docker rm
 
-                    echo "🐳 Building Docker Image..."
-                    docker build -t nalanda .
+                    echo "🧽 Removing old image (if any)..."
+                    docker rmi -f nalanda || true
                 '''
             }
         }
 
-        stage('Prune Previous Containers & Images') {
+        stage('Build Image') {
             steps {
-                sh '''
-                    echo "🧹 Pruning previous Docker containers and images..."
-
-                    # Stop any running container from nalanda image
-                    docker ps -q -f "ancestor=nalanda" | xargs -r docker stop
-                    
-                    # Remove any stopped containers from nalanda image
-                    docker ps -a -q -f "ancestor=nalanda" | xargs -r docker rm
-                    
-                    # Remove the old image if exists
-                    docker images -q nalanda | xargs -r docker rmi
-                '''
+                sh 'docker build -t nalanda .'
             }
         }
 
-        stage('Run Docker Container') {
+        stage('Run Container') {
             steps {
-                sh '''
-                    echo "🚀 Running Docker Container on port 3000..."
-                    docker run -d -p 3000:3000 nalanda
-                '''
+                sh 'docker run -d -p 3000:3000 --name nalanda-container nalanda'
             }
         }
     }
 
     post {
         always {
-            echo "✅ Pipeline completed"
+            echo '✅ Done!'
         }
     }
 }
