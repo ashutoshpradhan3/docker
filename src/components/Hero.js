@@ -28,7 +28,7 @@ function Hero() {
         </h1>
         <p>Top Quality Tiles, Marbles, and Bathtubs from the Heart of Patna</p>
         <button className="cta-button" onClick={handleButtonClick}>
-          Explore Our Collection
+          View Our Collection
         </button>
       </div>
     </section>
