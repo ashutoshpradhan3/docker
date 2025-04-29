@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "ashutoshpradhan3/nalanda"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -8,28 +12,36 @@ pipeline {
             }
         }
 
-        stage('Clean Previous Image & Container') {
+        stage('Clean Previous') {
             steps {
                 sh '''
-                    echo "🛑 Stopping old container (if any)..."
-                    docker ps -q --filter "ancestor=nalanda" | xargs -r docker stop
-                    docker ps -a -q --filter "ancestor=nalanda" | xargs -r docker rm
-
-                    echo "🧽 Removing old image (if any)..."
-                    docker rmi -f nalanda || true
+                    docker ps -q --filter "name=nalanda-container" | xargs -r docker stop
+                    docker ps -a -q --filter "name=nalanda-container" | xargs -r docker rm
+                    docker rmi -f $IMAGE_NAME || true
                 '''
             }
         }
 
         stage('Build Image') {
             steps {
-                sh 'docker build -t nalanda .'
+                sh 'docker build -t $IMAGE_NAME .'
+            }
+        }
+
+        stage('Docker Hub Login & Push') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push $IMAGE_NAME
+                    '''
+                }
             }
         }
 
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 3000:3000 --name nalanda-container nalanda'
+                sh 'docker run -d -p 3000:3000 --name nalanda-container $IMAGE_NAME'
             }
         }
     }
