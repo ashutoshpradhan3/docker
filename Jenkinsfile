@@ -1,11 +1,7 @@
 pipeline {
     agent any
 
-    environment {
-        // Ensuring proper PATH usage in macOS Jenkins CLI
-        PATH = "/usr/local/bin:$PATH"
-    }
-
+    
     stages {
         stage('Checkout') {
             steps {
