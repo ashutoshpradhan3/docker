@@ -23,6 +23,23 @@ pipeline {
             }
         }
 
+        stage('Prune Previous Containers & Images') {
+            steps {
+                sh '''
+                    echo "🧹 Pruning previous Docker containers and images..."
+
+                    # Stop any running container from nalanda image
+                    docker ps -q -f "ancestor=nalanda" | xargs -r docker stop
+                    
+                    # Remove any stopped containers from nalanda image
+                    docker ps -a -q -f "ancestor=nalanda" | xargs -r docker rm
+                    
+                    # Remove the old image if exists
+                    docker images -q nalanda | xargs -r docker rmi
+                '''
+            }
+        }
+
         stage('Run Docker Container') {
             steps {
                 sh '''
