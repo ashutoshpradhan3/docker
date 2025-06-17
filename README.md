@@ -68,3 +68,19 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+
+
+
+
+As part of my recent project titled “Nalanda CP Ceramics Pvt. Ltd.”, I had the opportunity to apply several core DevOps practices while building a revenue-generative React.js-based website for a real-world client.
+
+To ensure smooth development and deployment workflows, I implemented a CI/CD pipeline using Jenkins, where every push to the main branch triggered an automated build and deployment process. I containerized the entire application using Docker, which allowed for consistency across development and production environments. The Docker images were versioned and pushed to Docker Hub, enabling easy deployment and rollback when required.
+
+At one point, when Jenkins encountered stability issues on my local machine, I migrated the pipeline to an AWS EC2 instance, which helped me maintain uptime and reliability for the automated deployments.
+
+This project not only helped me strengthen my technical skills in containerization, automation, and cloud deployment, but also gave me practical exposure to real-world DevOps practices, such as version control, continuous integration, and infrastructure setup.
+
+Through this hands-on experience, I developed a strong foundation in DevOps workflows and tools, which I am eager to bring into a professional setting and expand further.
